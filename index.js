@@ -28,7 +28,8 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        const tourSpotsCollection = client.db("tourismDB").collection("touristsSpot");
+        const tourSpotsCollection = client.db("tourismDB").collection("touristsSpot")
+        const countriesCollection = client.db("tourismDB").collection("countries")
 
         // read all data
         app.get('/tourspot', async (req, res) => {
@@ -36,6 +37,12 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+        app.get('/countries', async (req, res) => {
+            const cursor = countriesCollection.find()
+            const result = await cursor.toArray();
+            res.send(result);
+        })
+
 
         // read single data
         app.get('/tourspot/:id', async (req, res) => {
@@ -44,6 +51,8 @@ async function run() {
             const result = await tourSpotsCollection.findOne(query);
             res.send(result)
         })
+
+        
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
