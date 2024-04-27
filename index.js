@@ -11,8 +11,8 @@ app.use(cors());
 app.use(express.json())
 
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@jahid12.81vfswo.mongodb.net/?retryWrites=true&w=majority&appName=jahid12`;
+
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -28,17 +28,22 @@ async function run() {
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
 
-        // const database = client.db("tourismDB");
-        // const tourSpotsCollection = database.collection("touristsSpot");
         const tourSpotsCollection = client.db("tourismDB").collection("touristsSpot");
 
-
+        // read all data
         app.get('/tourspot', async (req, res) => {
             const cursor = tourSpotsCollection.find()
             const result = await cursor.toArray();
             res.send(result);
         })
 
+        // read single data
+        app.get('/tourspot/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await tourSpotsCollection.findOne(query);
+            res.send(result)
+        })
 
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
@@ -50,7 +55,6 @@ async function run() {
     }
 }
 run().catch(console.dir);
-
 
 
 
