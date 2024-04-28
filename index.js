@@ -26,7 +26,7 @@ const client = new MongoClient(uri, {
 async function run() {
     try {
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
 
         const tourSpotsCollection = client.db("tourismDB").collection("touristsSpot")
         const countriesCollection = client.db("tourismDB").collection("countries")
@@ -70,6 +70,24 @@ async function run() {
             const result = await tourSpotsCollection.insertOne(newtourspot);
             res.send(result)
         })
+
+
+        // Update
+        app.patch('/tourspot/id/:id', async (req, res) => {
+            const id = req.params.id;
+            const coffe = req.body;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updateCoffe = {
+                $set: {
+                    image: coffe.image,
+                    countryName: coffe.countryName,
+                },
+            };
+            const result = await tourSpotsCollection.updateOne(filter, updateCoffe, options);
+            res.send(result)
+        })
+
 
 
         // delete
