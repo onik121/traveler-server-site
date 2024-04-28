@@ -36,21 +36,32 @@ async function run() {
             const cursor = tourSpotsCollection.find()
             const result = await cursor.toArray();
             res.send(result);
-        })
+        }),
         app.get('/countries', async (req, res) => {
             const cursor = countriesCollection.find()
             const result = await cursor.toArray();
             res.send(result);
-        })
+        }),
 
 
-        // read single data
-        app.get('/tourspot/:id', async (req, res) => {
+
+        // Read single data by ID
+        app.get('/tourspot/id/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await tourSpotsCollection.findOne(query);
-            res.send(result)
-        })
+            res.send(result);
+        });
+
+        // Read data by email
+        app.get('/tourspot/email/:email', async (req, res) => {
+            const email = req.params.email;
+            const cursor = tourSpotsCollection.find({ email: email });
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+
 
         // add data
         app.post('/tourspot', async (req, res) => {
