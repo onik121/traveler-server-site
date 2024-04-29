@@ -75,13 +75,21 @@ async function run() {
         // Update
         app.patch('/tourspot/id/:id', async (req, res) => {
             const id = req.params.id;
-            const coffe = req.body;
+            const tourspot = req.body;
             const filter = { _id: new ObjectId(id) };
             const options = { upsert: true };
             const updateCoffe = {
                 $set: {
-                    image: coffe.image,
-                    countryName: coffe.countryName,
+                    image: tourspot.image,
+                    tourists_spot_name: tourspot.tourists_spot_name,
+                    location: tourspot.location,
+                    title: tourspot.title,
+                    average_cost: tourspot. average_cost,
+                    seasonality: tourspot.seasonality,
+                    totalVisitorsPerYear: tourspot.totalVisitorsPerYear,
+                    description: tourspot.description,
+                    travel_time: tourspot.travel_time,
+                    countryName: tourspot.countryName,
                 },
             };
             const result = await tourSpotsCollection.updateOne(filter, updateCoffe, options);
