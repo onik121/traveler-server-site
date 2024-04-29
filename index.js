@@ -53,13 +53,22 @@ async function run() {
             res.send(result);
         });
 
-        // Read data by email
+        // Read single data by email
         app.get('/tourspot/email/:email', async (req, res) => {
             const email = req.params.email;
             const cursor = tourSpotsCollection.find({ email: email });
             const result = await cursor.toArray();
             res.send(result);
         });
+
+        
+        app.get('/countries/id/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { countryName: id};
+            const result = await countriesCollection.findOne(query);
+            res.send(result);
+        });
+
 
 
 
