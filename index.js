@@ -52,7 +52,6 @@ async function run() {
             const result = await tourSpotsCollection.findOne(query);
             res.send(result);
         });
-
         // Read single data by email
         app.get('/tourspot/email/:email', async (req, res) => {
             const email = req.params.email;
@@ -60,12 +59,18 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
-
-        
+        // 
         app.get('/countries/id/:id', async (req, res) => {
             const id = req.params.id;
             const query = { countryName: id};
             const result = await countriesCollection.findOne(query);
+            res.send(result);
+        });
+        // 
+        app.get('/tourspot/country/:name', async (req, res) => {
+            const countryName = req.params.name;
+            const cursor = tourSpotsCollection.find({ countryName: countryName });
+            const result = await cursor.toArray();
             res.send(result);
         });
 
@@ -79,6 +84,8 @@ async function run() {
             const result = await tourSpotsCollection.insertOne(newtourspot);
             res.send(result)
         })
+
+
 
 
         // Update
